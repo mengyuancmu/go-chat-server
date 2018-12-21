@@ -19,6 +19,7 @@ func (c *MyConn) start() {
 			fmt.Println("input")
 			fmt.Println(n)
 			c.Writer.Write(n)
+			c.Writer.Flush()
 		}
 	}()
 }

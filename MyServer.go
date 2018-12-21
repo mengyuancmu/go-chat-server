@@ -20,6 +20,7 @@ func (s *MyServer) start() {
 		conn, _ := ln.Accept()
 		reader := bufio.NewReader(conn)
 		first, _ := reader.ReadString('\n')
+		first = strings.TrimSpace(first)
 		fmt.Println(first)
 		writer := bufio.NewWriter(conn)
 		myConn := &MyConn{
