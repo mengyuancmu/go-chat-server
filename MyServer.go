@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/binary"
 	"fmt"
 	"net"
 	"strings"
@@ -9,7 +10,7 @@ import (
 )
 
 type MyServer struct {
-	Conns  map[string]*MyConn
+	Conns  map[uint64]*MyConn
 	RwLock sync.RWMutex
 }
 
@@ -19,9 +20,9 @@ func (s *MyServer) start() {
 	for {
 		conn, _ := ln.Accept()
 		reader := bufio.NewReader(conn)
-		first, _ := reader.ReadString('\n')
-		first = strings.TrimSpace(first)
-		fmt.Println(first)
+		first, _ := reader.ReadBytes('\n')
+		first = first[:len(first)-1]
+		uid := binary.BigEndian.Uint64(first)
 		writer := bufio.NewWriter(conn)
 		myConn := &MyConn{
 			Conn:      &conn,
@@ -31,7 +32,7 @@ func (s *MyServer) start() {
 		}
 		myConn.start()
 		s.RwLock.Lock()
-		s.Conns[first] = myConn
+		s.Conns[uid] = myConn
 		s.RwLock.Unlock()
 		go func() {
 			for {
