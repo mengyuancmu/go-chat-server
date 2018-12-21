@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 )
 
@@ -16,8 +15,6 @@ type MyConn struct {
 func (c *MyConn) start() {
 	go func() {
 		for n := range c.InputChan {
-			fmt.Println("input")
-			fmt.Println(n)
 			c.Writer.Write(n)
 			c.Writer.Flush()
 		}
