@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"net"
 	"strings"
 	"sync"
@@ -19,6 +20,7 @@ func (s *MyServer) start() {
 		conn, _ := ln.Accept()
 		reader := bufio.NewReader(conn)
 		first, _ := reader.ReadString('\n')
+		fmt.Println(first)
 		writer := bufio.NewWriter(conn)
 		myConn := &MyConn{
 			Conn:      &conn,
