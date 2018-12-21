@@ -38,6 +38,7 @@ func (s *MyServer) start() {
 				msgArr := strings.Split(msg, "::")
 				if len(msgArr) == 2 {
 					id := msgArr[0]
+					fmt.Println(id)
 					msgBody := msgArr[1]
 					s.RwLock.RLock()
 					target := s.Conns[id]
